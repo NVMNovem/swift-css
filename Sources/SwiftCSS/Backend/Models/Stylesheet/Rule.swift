@@ -7,15 +7,43 @@
 
 public struct Rule: CSSRenderable {
     
-    public let selector: Selector
+    let selector: Selector
     public let properties: [any CSSProperty]
     
     public init(
-        _ selector: Selector,
+        _ selectorParts: SelectorPart...,
         @CSSPropertyBuilder properties: () -> [any CSSProperty]
     ) {
-        self.selector = selector
+        self.init(
+            selectorParts,
+            properties: properties
+        )
+    }
+    
+    public init(
+        _ selectorParts: [SelectorPart],
+        @CSSPropertyBuilder properties: () -> [any CSSProperty]
+    ) {
+        self.selector = Selector(selectorParts)
         self.properties = properties()
+    }
+    
+    public static func list(
+        _ selectors: [[SelectorPart]],
+        @CSSPropertyBuilder properties: () -> [any CSSProperty]
+    ) -> Self {
+        .init(
+            selector: Selector(list: selectors),
+            properties: properties()
+        )
+    }
+    
+    init(
+        selector: Selector,
+        properties: [any CSSProperty]
+    ) {
+        self.selector = selector
+        self.properties = properties
     }
     
     public func render(using renderer: CSSRenderer) {
