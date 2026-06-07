@@ -1,11 +1,11 @@
 //
-//  Color.swift
+//  CSSColor.swift
 //  swift-css
 //
 //  Created by Damian Van de Kauter on 07/06/2026.
 //
 
-public struct Color: Sendable, ExpressibleByStringLiteral {
+public struct CSSColor: CSSValue, Sendable, ExpressibleByStringLiteral {
     
     public let rawValue: String
     
@@ -18,7 +18,7 @@ public struct Color: Sendable, ExpressibleByStringLiteral {
     }
 }
 
-public extension Color {
+public extension CSSColor {
     
     static let red: Self = .init("red")
     static let green: Self = .init("green")

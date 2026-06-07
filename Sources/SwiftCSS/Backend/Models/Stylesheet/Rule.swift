@@ -8,21 +8,21 @@
 public struct Rule: CSSRenderable {
     
     public let selector: Selector
-    public let declarations: [Declaration]
+    public let properties: [any CSSProperty]
     
     public init(
         _ selector: Selector,
-        @DeclarationBuilder declarations: () -> [Declaration]
+        @CSSPropertyBuilder properties: () -> [any CSSProperty]
     ) {
         self.selector = selector
-        self.declarations = declarations()
+        self.properties = properties()
     }
     
     public func render(using renderer: CSSRenderer) {
         renderer.write(selector.rawValue)
         renderer.write(" {")
         
-        if declarations.isEmpty {
+        if properties.isEmpty {
             renderer.write("}")
             return
         }
@@ -30,10 +30,10 @@ public struct Rule: CSSRenderable {
         if renderer.prettyPrinted {
             renderer.increaseIndentation()
             
-            for declaration in declarations {
+            for property in properties {
                 renderer.writeLineBreak()
                 renderer.writeIndentation()
-                declaration.render(using: renderer)
+                property.render(using: renderer)
             }
             
             renderer.decreaseIndentation()
@@ -41,8 +41,8 @@ public struct Rule: CSSRenderable {
             renderer.writeIndentation()
             renderer.write("}")
         } else {
-            for declaration in declarations {
-                declaration.render(using: renderer)
+            for property in properties {
+                property.render(using: renderer)
             }
             
             renderer.write("}")
