@@ -26,7 +26,27 @@ public extension CSSLength {
         .init("\(value)px")
     }
     
+    static func em(_ value: Double) -> Self {
+        .init("\(formatCSSNumber(value))em")
+    }
+    
     static func rem(_ value: Double) -> Self {
         .init("\(formatCSSNumber(value))rem")
+    }
+    
+    static func vh(_ value: Double) -> Self {
+        .init("\(formatCSSNumber(value))vh")
+    }
+    
+    static func vw(_ value: Double) -> Self {
+        .init("\(formatCSSNumber(value))vw")
+    }
+    
+    static func fr(_ value: Double) -> Self {
+        .init("\(formatCSSNumber(value))fr")
+    }
+    
+    static func ch(_ value: Double) -> Self {
+        .init("\(formatCSSNumber(value))ch")
     }
 }
