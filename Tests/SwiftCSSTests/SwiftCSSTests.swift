@@ -4,7 +4,11 @@ import Testing
 @Test func genericCSSDataTypesRenderRawValues() {
     #expect(CSSPercentage.percent(50).rawValue == "50%")
     #expect(CSSLength.px(24).rawValue == "24px")
+    #expect(CSSLength.vh(100).rawValue == "100vh")
+    #expect(CSSLength.fr(1).rawValue == "1fr")
     #expect(CSSColor.hex("0f1117").rawValue == "#0f1117")
+    #expect(CSSTime.milliseconds(180).rawValue == "180ms")
+    #expect(CSSAngle.deg(45).rawValue == "45deg")
 }
 
 @Test func propertySpecificValuesRenderRawValues() {
@@ -93,3 +97,53 @@ import Testing
     )
 }
 
+@Test func portfolioPrimitivesRenderPropertyValues() {
+    #expect(BoxSizing(.borderBox).render(prettyPrinted: false) == "box-sizing:border-box;")
+    #expect(Gap(.px(28)).render(prettyPrinted: false) == "gap:28px;")
+    #expect(MinHeight(.vh(100)).render(prettyPrinted: false) == "min-height:100vh;")
+    #expect(GridTemplateColumns("repeat(3, minmax(0, 1fr))").render(prettyPrinted: false) == "grid-template-columns:repeat(3, minmax(0, 1fr));")
+    #expect(Transform("translateY(-2px)").render(prettyPrinted: false) == "transform:translateY(-2px);")
+    #expect(Transition("transform 180ms ease").render(prettyPrinted: false) == "transition:transform 180ms ease;")
+}
+
+@Test func mediaRuleRendersPrettyCSS() {
+    let mediaRule = MediaRule(.maxWidth(.px(760))) {
+        Rule(.element("main")) {
+            Padding("24px 0")
+        }
+        
+        Rule(.class("cards")) {
+            GridTemplateColumns("1fr")
+        }
+    }
+    
+    #expect(
+        mediaRule.render() == """
+        @media (max-width: 760px) {
+            main {
+                padding: 24px 0;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        """
+    )
+}
+
+@Test func mediaRuleRendersCompactCSS() {
+    let mediaRule = MediaRule(.maxWidth(.px(760))) {
+        Rule(.element("main")) {
+            Padding("24px 0")
+        }
+        
+        Rule(.class("cards")) {
+            GridTemplateColumns("1fr")
+        }
+    }
+    
+    #expect(
+        mediaRule.render(prettyPrinted: false) == "@media (max-width:760px) {main {padding:24px 0;}.cards {grid-template-columns:1fr;}}"
+    )
+}

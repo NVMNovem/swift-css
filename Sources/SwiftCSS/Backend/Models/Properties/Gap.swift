@@ -1,13 +1,13 @@
 //
-//  Padding.swift
+//  Gap.swift
 //  swift-css
 //
-//  Created by Damian Van de Kauter on 07/06/2026.
+//  Created by Damian Van de Kauter on 08/06/2026.
 //
 
-public struct Padding: CSSProperty {
+public struct Gap: CSSProperty {
     
-    public let name = "padding"
+    public let name = "gap"
     public let value: String
     
     public init(_ value: CSSLength) {
