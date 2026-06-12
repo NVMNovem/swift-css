@@ -147,3 +147,229 @@ import Testing
         mediaRule.render(prettyPrinted: false) == "@media (max-width:760px) {main {padding:24px 0;}.cards {grid-template-columns:1fr;}}"
     )
 }
+
+@Test func mediaAliasRendersTypedColorSchemeCondition() {
+    let media = Media(.prefersColorScheme(.dark)) {
+        Rule(.root) {
+            RawProperty("--text", "#fff")
+        }
+    }
+    
+    #expect(
+        media.render() == """
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text: #fff;
+            }
+        }
+        """
+    )
+    
+    #expect(
+        media.render(prettyPrinted: false) == "@media (prefers-color-scheme:dark) {:root {--text:#fff;}}"
+    )
+}
+
+@Test func mediaRuleRawConditionStillRenders() {
+    let mediaRule = MediaRule(.raw("(prefers-color-scheme: dark)")) {
+        Rule(.root) {
+            RawProperty("--text", "#fff")
+        }
+    }
+    
+    #expect(
+        mediaRule.render(prettyPrinted: false) == "@media (prefers-color-scheme: dark) {:root {--text:#fff;}}"
+    )
+}
+
+@Test func nestedMediaRulesRender() {
+    let media = Media(.maxWidth(.px(760))) {
+        Media(.reducedMotion(.noPreference)) {
+            Rule(.class("card")) {
+                Transition("opacity 180ms ease")
+            }
+        }
+    }
+    
+    #expect(
+        media.render() == """
+        @media (max-width: 760px) {
+            @media (prefers-reduced-motion: no-preference) {
+                .card {
+                    transition: opacity 180ms ease;
+                }
+            }
+        }
+        """
+    )
+}
+
+@Test func supportsRendersPropertyCondition() {
+    let supports = Supports(.property("display", "grid")) {
+        Rule(.class("layout")) {
+            RawProperty("display", "grid")
+        }
+    }
+    
+    #expect(
+        supports.render() == """
+        @supports (display: grid) {
+            .layout {
+                display: grid;
+            }
+        }
+        """
+    )
+    
+    #expect(
+        supports.render(prettyPrinted: false) == "@supports (display:grid) {.layout {display:grid;}}"
+    )
+}
+
+@Test func supportsRendersTypedDisplayCondition() {
+    let supports = Supports(.display(.grid)) {
+        Rule(.class("layout")) {
+            Display(.grid)
+        }
+    }
+    
+    #expect(
+        supports.render(prettyPrinted: false) == "@supports (display:grid) {.layout {display:grid;}}"
+    )
+}
+
+@Test func namedLayerRendersRules() {
+    let layer = Layer("components") {
+        Rule(.class("card")) {
+            RawProperty("padding", "1rem")
+        }
+    }
+    
+    #expect(
+        layer.render() == """
+        @layer components {
+            .card {
+                padding: 1rem;
+            }
+        }
+        """
+    )
+    
+    #expect(
+        layer.render(prettyPrinted: false) == "@layer components {.card {padding:1rem;}}"
+    )
+}
+
+@Test func anonymousLayerRendersRules() {
+    let layer = Layer {
+        Rule(.class("reset")) {
+            RawProperty("box-sizing", "border-box")
+        }
+    }
+    
+    #expect(
+        layer.render() == """
+        @layer {
+            .reset {
+                box-sizing: border-box;
+            }
+        }
+        """
+    )
+}
+
+@Test func layerOrderRendersDeclaration() {
+    #expect(
+        Layer.order("reset", "base", "components").render() == "@layer reset, base, components;"
+    )
+}
+
+@Test func keyframesRenderPrettyCSS() {
+    let keyframes = Keyframes("pulse") {
+        Keyframe(.from) {
+            RawProperty("opacity", "0")
+        }
+        
+        Keyframe(.percent(50)) {
+            RawProperty("opacity", "0.5")
+        }
+        
+        Keyframe(.to) {
+            RawProperty("opacity", "1")
+        }
+    }
+    
+    #expect(
+        keyframes.render() == """
+        @keyframes pulse {
+            from {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+        """
+    )
+}
+
+@Test func keyframesRenderCompactCSS() {
+    let keyframes = Keyframes("pulse") {
+        Keyframe(.from) {
+            RawProperty("opacity", "0")
+        }
+        
+        Keyframe(.percent(50)) {
+            RawProperty("opacity", "0.5")
+        }
+        
+        Keyframe(.to) {
+            RawProperty("opacity", "1")
+        }
+    }
+    
+    #expect(
+        keyframes.render(prettyPrinted: false) == "@keyframes pulse {from {opacity:0;}50% {opacity:0.5;}to {opacity:1;}}"
+    )
+}
+
+@Test func stylesheetRendersNewAtRuleDSL() {
+    let stylesheet = StyleSheet {
+        Media(.prefersColorScheme(.dark)) {
+            Rule(.root) {
+                RawProperty("--text", "#fff")
+            }
+        }
+        
+        Supports(.display(.grid)) {
+            Rule(.class("layout")) {
+                RawProperty("display", "grid")
+            }
+        }
+        
+        Layer("components") {
+            Rule(.class("card")) {
+                RawProperty("padding", "1rem")
+            }
+        }
+        
+        Keyframes("pulse") {
+            Keyframe(.from) {
+                RawProperty("opacity", "0")
+            }
+            
+            Keyframe(.to) {
+                RawProperty("opacity", "1")
+            }
+        }
+    }
+    
+    #expect(
+        stylesheet.render(prettyPrinted: false) == "@media (prefers-color-scheme:dark) {:root {--text:#fff;}}@supports (display:grid) {.layout {display:grid;}}@layer components {.card {padding:1rem;}}@keyframes pulse {from {opacity:0;}to {opacity:1;}}"
+    )
+}
