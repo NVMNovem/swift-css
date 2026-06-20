@@ -20,9 +20,14 @@ public struct AlignItemsValue: CSSValue, Sendable, ExpressibleByStringLiteral {
 
 public extension AlignItemsValue {
     
-    static let stretch: Self = .init("stretch")
-    static let center: Self = .init("center")
+    static let start: Self = .init("start")
+    static let end: Self = .init("end")
+    
     static let flexStart: Self = .init("flex-start")
     static let flexEnd: Self = .init("flex-end")
+    
+    static let center: Self = .init("center")
+    static let stretch: Self = .init("stretch")
+    
     static let baseline: Self = .init("baseline")
 }
