@@ -8,5 +8,4 @@
 public protocol CSSOutputStream: AnyObject {
     
     func write(_ string: String)
-    
 }

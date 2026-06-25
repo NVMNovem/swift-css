@@ -5,7 +5,7 @@
 //  Created by Damian Van de Kauter on 07/06/2026.
 //
 
-public protocol CSSValue {
+public protocol CSSValue: Sendable {
     
     var rawValue: String { get }
 }
