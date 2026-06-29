@@ -106,6 +106,14 @@ import Testing
     #expect(Transition("transform 180ms ease").render(prettyPrinted: false) == "transition:transform 180ms ease;")
 }
 
+@Test func marginSidePropertiesRenderCSS() {
+    #expect(MarginTop(.px(8)).render() == "margin-top: 8px;")
+    #expect(MarginBottom(.px(5)).render() == "margin-bottom: 5px;")
+    #expect(MarginLeft(.px(12)).render() == "margin-left: 12px;")
+    #expect(MarginRight(.px(12)).render() == "margin-right: 12px;")
+    #expect(MarginBottom("var(--space)").render() == "margin-bottom: var(--space);")
+}
+
 @Test func mediaRuleRendersPrettyCSS() {
     let mediaRule = MediaRule(.maxWidth(.px(760))) {
         Rule(.element("main")) {

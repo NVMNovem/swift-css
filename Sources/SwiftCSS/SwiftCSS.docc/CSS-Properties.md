@@ -54,6 +54,10 @@ Rule(.class("hero")) {
 - ``MaxWidth``
 - ``MaxHeight``
 - ``Margin``
+- ``MarginTop``
+- ``MarginBottom``
+- ``MarginLeft``
+- ``MarginRight``
 - ``Padding``
 - ``Gap``
 - ``RowGap``
