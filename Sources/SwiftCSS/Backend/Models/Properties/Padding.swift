@@ -10,7 +10,7 @@ public struct Padding: CSSProperty {
     public let name = "padding"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
     

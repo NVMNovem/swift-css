@@ -10,7 +10,7 @@ public struct Margin: CSSProperty {
     public let name = "margin"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
 }
@@ -20,7 +20,7 @@ public struct MarginTop: CSSProperty {
     public let name = "margin-top"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
     
@@ -34,7 +34,7 @@ public struct MarginBottom: CSSProperty {
     public let name = "margin-bottom"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
     
@@ -48,7 +48,7 @@ public struct MarginLeft: CSSProperty {
     public let name = "margin-left"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
     
@@ -62,7 +62,7 @@ public struct MarginRight: CSSProperty {
     public let name = "margin-right"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
     

@@ -10,7 +10,7 @@ public struct BackgroundColor: CSSProperty {
     public let name = "background-color"
     public let value: String
     
-    public init(_ value: CSSColor) {
+    public init(_ value: Color) {
         self.value = value.rawValue
     }
 }

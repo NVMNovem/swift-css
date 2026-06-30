@@ -1,11 +1,11 @@
 //
-//  CSSPercentage.swift
+//  Percentage.swift
 //  swift-css
 //
 //  Created by Damian Van de Kauter on 07/06/2026.
 //
 
-public struct CSSPercentage: CSSValue, Sendable, ExpressibleByStringLiteral {
+public struct Percentage: CSSValue, Sendable, ExpressibleByStringLiteral {
     
     public let rawValue: String
     
@@ -18,7 +18,7 @@ public struct CSSPercentage: CSSValue, Sendable, ExpressibleByStringLiteral {
     }
 }
 
-public extension CSSPercentage {
+public extension Percentage {
     
     static let zero: Self = .init("0%")
     

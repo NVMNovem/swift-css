@@ -10,7 +10,7 @@ public struct BorderRadius: CSSProperty {
     public let name = "border-radius"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
 }

@@ -1,11 +1,11 @@
 //
-//  CSSLength.swift
+//  Length.swift
 //  swift-css
 //
 //  Created by Damian Van de Kauter on 07/06/2026.
 //
 
-public struct CSSLength: CSSValue, Sendable, ExpressibleByStringLiteral {
+public struct Length: CSSValue, Sendable, ExpressibleByStringLiteral {
     
     public let rawValue: String
     
@@ -18,7 +18,7 @@ public struct CSSLength: CSSValue, Sendable, ExpressibleByStringLiteral {
     }
 }
 
-public extension CSSLength {
+public extension Length {
     
     static let zero: Self = .init("0")
     

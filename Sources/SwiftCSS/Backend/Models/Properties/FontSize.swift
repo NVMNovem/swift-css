@@ -10,7 +10,7 @@ public struct FontSize: CSSProperty {
     public let name = "font-size"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
 }

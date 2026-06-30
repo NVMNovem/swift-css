@@ -10,7 +10,7 @@ public struct BorderColor: CSSProperty {
     public let name = "border-color"
     public let value: String
     
-    public init(_ value: CSSColor) {
+    public init(_ value: Color) {
         self.value = value.rawValue
     }
     

@@ -2,13 +2,13 @@ import Testing
 @testable import SwiftCSS
 
 @Test func genericCSSDataTypesRenderRawValues() {
-    #expect(CSSPercentage.percent(50).rawValue == "50%")
-    #expect(CSSLength.px(24).rawValue == "24px")
-    #expect(CSSLength.vh(100).rawValue == "100vh")
-    #expect(CSSLength.fr(1).rawValue == "1fr")
-    #expect(CSSColor.hex("0f1117").rawValue == "#0f1117")
-    #expect(CSSTime.milliseconds(180).rawValue == "180ms")
-    #expect(CSSAngle.deg(45).rawValue == "45deg")
+    #expect(Percentage.percent(50).rawValue == "50%")
+    #expect(Length.px(24).rawValue == "24px")
+    #expect(Length.vh(100).rawValue == "100vh")
+    #expect(Length.fr(1).rawValue == "1fr")
+    #expect(Color.hex("0f1117").rawValue == "#0f1117")
+    #expect(Time.milliseconds(180).rawValue == "180ms")
+    #expect(Angle.deg(45).rawValue == "45deg")
 }
 
 @Test func propertySpecificValuesRenderRawValues() {
@@ -16,6 +16,7 @@ import Testing
     #expect(PositionValue.absolute.rawValue == "absolute")
     #expect(FontWeight.Value.weight(700).rawValue == "700")
     #expect(Color(.white).value == "white")
+    #expect(Color("#fff").render(prettyPrinted: false) == "color:#fff;")
 }
 
 @Test func firstClassPropertiesRenderPrettyCSS() {
@@ -104,6 +105,7 @@ import Testing
     #expect(GridTemplateColumns("repeat(3, minmax(0, 1fr))").render(prettyPrinted: false) == "grid-template-columns:repeat(3, minmax(0, 1fr));")
     #expect(Transform("translateY(-2px)").render(prettyPrinted: false) == "transform:translateY(-2px);")
     #expect(Transition("transform 180ms ease").render(prettyPrinted: false) == "transition:transform 180ms ease;")
+    #expect(TransitionDuration(.seconds(0.2)).render(prettyPrinted: false) == "transition-duration:0.2s;")
 }
 
 @Test func typographyPropertiesRenderCSS() {

@@ -10,7 +10,7 @@ public struct RowGap: CSSProperty {
     public let name = "row-gap"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
     

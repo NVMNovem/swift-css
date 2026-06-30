@@ -16,11 +16,11 @@ public struct MediaCondition: Sendable {
 
 public extension MediaCondition {
     
-    static func maxWidth(_ value: CSSLength) -> Self {
+    static func maxWidth(_ value: Length) -> Self {
         .init(.feature("max-width", value.rawValue))
     }
     
-    static func minWidth(_ value: CSSLength) -> Self {
+    static func minWidth(_ value: Length) -> Self {
         .init(.feature("min-width", value.rawValue))
     }
     

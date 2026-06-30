@@ -14,7 +14,7 @@ public struct LineHeight: CSSProperty {
         self.value = formatCSSNumber(value)
     }
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
     

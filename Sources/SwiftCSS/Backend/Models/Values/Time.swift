@@ -1,11 +1,11 @@
 //
-//  CSSTime.swift
+//  Time.swift
 //  swift-css
 //
 //  Created by Damian Van de Kauter on 08/06/2026.
 //
 
-public struct CSSTime: CSSValue, Sendable, ExpressibleByStringLiteral {
+public struct Time: CSSValue, Sendable, ExpressibleByStringLiteral {
     
     public let rawValue: String
     
@@ -18,7 +18,7 @@ public struct CSSTime: CSSValue, Sendable, ExpressibleByStringLiteral {
     }
 }
 
-public extension CSSTime {
+public extension Time {
     
     static func milliseconds(_ value: Int) -> Self {
         .init("\(value)ms")

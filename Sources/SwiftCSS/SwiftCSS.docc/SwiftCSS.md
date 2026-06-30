@@ -113,17 +113,18 @@ when the package does not yet expose a dedicated property wrapper.
 - ``Top``
 - ``Transform``
 - ``Transition``
+- ``TransitionDuration``
 - ``Width``
 - ``ZIndex``
 
 ### CSS Values
 
 - ``CSSValue``
-- ``CSSLength``
-- ``CSSPercentage``
-- ``CSSColor``
-- ``CSSTime``
-- ``CSSAngle``
+- ``Length``
+- ``Percentage``
+- ``Color``
+- ``Time``
+- ``Angle``
 - ``AlignItemsValue``
 - ``BoxSizingValue``
 - ``DisplayValue``

@@ -1,11 +1,11 @@
 //
-//  CSSAngle.swift
+//  Angle.swift
 //  swift-css
 //
 //  Created by Damian Van de Kauter on 08/06/2026.
 //
 
-public struct CSSAngle: CSSValue, Sendable, ExpressibleByStringLiteral {
+public struct Angle: CSSValue, Sendable, ExpressibleByStringLiteral {
     
     public let rawValue: String
     
@@ -18,7 +18,7 @@ public struct CSSAngle: CSSValue, Sendable, ExpressibleByStringLiteral {
     }
 }
 
-public extension CSSAngle {
+public extension Angle {
     
     static func deg(_ value: Double) -> Self {
         .init("\(formatCSSNumber(value))deg")

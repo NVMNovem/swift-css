@@ -18,8 +18,8 @@ Rule(.class("panel")) {
 }
 ```
 
-Use typed values when the package provides them, for example ``CSSLength``,
-``CSSPercentage``, ``CSSColor``, and ``DisplayValue``. Use strings for CSS
+Use typed values when the package provides them, for example ``Length``,
+``Percentage``, ``Color``, and ``DisplayValue``. Use strings for CSS
 functions, shorthand values, custom values, or newer CSS syntax that has not
 yet received a dedicated SwiftCSS type.
 
@@ -99,6 +99,7 @@ Rule(.class("hero")) {
 
 - ``Transform``
 - ``Transition``
+- ``TransitionDuration``
 
 ### Escape Hatch
 

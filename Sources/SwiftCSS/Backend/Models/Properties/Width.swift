@@ -10,11 +10,11 @@ public struct Width: CSSProperty {
     public let name = "width"
     public let value: String
     
-    public init(_ value: CSSLength) {
+    public init(_ value: Length) {
         self.value = value.rawValue
     }
     
-    public init(_ value: CSSPercentage) {
+    public init(_ value: Percentage) {
         self.value = value.rawValue
     }
 }
