@@ -107,7 +107,9 @@ when the package does not yet expose a dedicated property wrapper.
 - ``Position``
 - ``Right``
 - ``RowGap``
+- ``TextAlign``
 - ``TextDecoration``
+- ``TextTransform``
 - ``Top``
 - ``Transform``
 - ``Transition``
@@ -129,7 +131,9 @@ when the package does not yet expose a dedicated property wrapper.
 - ``JustifyContentValue``
 - ``OverflowValue``
 - ``PositionValue``
+- ``TextAlignValue``
 - ``TextDecorationValue``
+- ``TextTransformValue``
 - ``CSSColorSchemePreference``
 - ``CSSReducedMotionPreference``
 

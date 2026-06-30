@@ -22,5 +22,6 @@ public extension TextDecorationValue {
     
     static let none: Self = .init("none")
     static let underline: Self = .init("underline")
+    static let overline: Self = .init("overline")
     static let lineThrough: Self = .init("line-through")
 }

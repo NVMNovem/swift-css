@@ -106,6 +106,18 @@ import Testing
     #expect(Transition("transform 180ms ease").render(prettyPrinted: false) == "transition:transform 180ms ease;")
 }
 
+@Test func typographyPropertiesRenderCSS() {
+    #expect(TextTransform(.uppercase).render() == "text-transform: uppercase;")
+    #expect(TextTransform(.lowercase).render() == "text-transform: lowercase;")
+    #expect(TextTransform(.capitalize).render() == "text-transform: capitalize;")
+    #expect(TextTransform(.none).render() == "text-transform: none;")
+    #expect(TextAlign(.left).render() == "text-align: left;")
+    #expect(TextAlign(.center).render() == "text-align: center;")
+    #expect(TextAlign(.right).render() == "text-align: right;")
+    #expect(TextAlign(.justify).render() == "text-align: justify;")
+    #expect(TextDecoration(.overline).render() == "text-decoration: overline;")
+}
+
 @Test func marginSidePropertiesRenderCSS() {
     #expect(MarginTop(.px(8)).render() == "margin-top: 8px;")
     #expect(MarginBottom(.px(5)).render() == "margin-bottom: 5px;")

@@ -78,6 +78,8 @@ Rule(.class("hero")) {
 - ``FontWeight``
 - ``LineHeight``
 - ``LetterSpacing``
+- ``TextTransform``
+- ``TextAlign``
 - ``TextDecoration``
 
 ### Color, Borders, and Effects
