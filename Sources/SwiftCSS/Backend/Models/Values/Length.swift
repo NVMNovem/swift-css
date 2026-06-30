@@ -21,9 +21,18 @@ public struct Length: CSSValue, Sendable, ExpressibleByStringLiteral {
 public extension Length {
     
     static let zero: Self = .init("0")
+    static let auto: Self = .init("auto")
     
     static func px(_ value: Int) -> Self {
         .init("\(value)px")
+    }
+    
+    static func percent(_ value: Int) -> Self {
+        .init("\(value)%")
+    }
+    
+    static func percent(_ value: Double) -> Self {
+        .init("\(formatCSSNumber(value))%")
     }
     
     static func em(_ value: Double) -> Self {

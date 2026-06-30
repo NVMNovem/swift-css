@@ -13,7 +13,10 @@ Rule(.class("panel")) {
     Display(.grid)
     GridTemplateColumns("repeat(3, minmax(0, 1fr))")
     Gap(.px(24))
-    BackgroundColor(.hex("ffffff"))
+    Width(.percent(100))
+    Height(.auto)
+    BackgroundColor(.css("var(--panel)"))
+    BorderColor(.clear)
     BorderRadius(.px(12))
 }
 ```

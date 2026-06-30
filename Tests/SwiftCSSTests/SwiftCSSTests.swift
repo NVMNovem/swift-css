@@ -4,9 +4,14 @@ import Testing
 @Test func genericCSSDataTypesRenderRawValues() {
     #expect(Percentage.percent(50).rawValue == "50%")
     #expect(Length.px(24).rawValue == "24px")
+    #expect(Length.percent(100).rawValue == "100%")
+    #expect(Length.percent(12.5).rawValue == "12.5%")
+    #expect(Length.auto.rawValue == "auto")
     #expect(Length.vh(100).rawValue == "100vh")
     #expect(Length.fr(1).rawValue == "1fr")
     #expect(Color.hex("0f1117").rawValue == "#0f1117")
+    #expect(Color.css("var(--panel)").rawValue == "var(--panel)")
+    #expect(Color.clear.rawValue == "transparent")
     #expect(Time.milliseconds(180).rawValue == "180ms")
     #expect(Angle.deg(45).rawValue == "45deg")
 }
@@ -17,6 +22,10 @@ import Testing
     #expect(FontWeight.Value.weight(700).rawValue == "700")
     #expect(Color(.white).value == "white")
     #expect(Color("#fff").render(prettyPrinted: false) == "color:#fff;")
+    #expect(Color(.clear).render(prettyPrinted: false) == "color:transparent;")
+    #expect(BackgroundColor(.css("var(--panel)")).render(prettyPrinted: false) == "background-color:var(--panel);")
+    #expect(Width(.percent(100)).render(prettyPrinted: false) == "width:100%;")
+    #expect(Height(.auto).render(prettyPrinted: false) == "height:auto;")
 }
 
 @Test func firstClassPropertiesRenderPrettyCSS() {

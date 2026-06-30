@@ -16,7 +16,9 @@ let stylesheet = StyleSheet {
         Display(.flex)
         Position(.relative)
         Width(.percent(100))
-        BackgroundColor(.hex("0f1117"))
+        Height(.auto)
+        BackgroundColor(.css("var(--panel)"))
+        BorderColor(.clear)
         Padding(.px(24))
         FontWeight(.weight(700))
     }

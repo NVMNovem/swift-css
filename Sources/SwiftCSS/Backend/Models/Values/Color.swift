@@ -34,6 +34,11 @@ public extension Color {
     static let blue: Self = .init("blue")
     static let white: Self = .init("white")
     static let black: Self = .init("black")
+    static let clear: Self = .init("transparent")
+    
+    static func css(_ value: String) -> Self {
+        .init(value)
+    }
     
     static func hex(_ value: String) -> Self {
         .init(value.hasPrefix("#") ? value : "#\(value)")
