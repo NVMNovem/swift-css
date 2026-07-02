@@ -47,6 +47,8 @@ Rule(.class("hero")) {
 - ``Inset``
 - ``ZIndex``
 - ``BoxSizing``
+- ``Overflow``
+- ``ObjectFit``
 
 ### Sizing and Spacing
 
@@ -65,6 +67,7 @@ Rule(.class("hero")) {
 - ``Gap``
 - ``RowGap``
 - ``ColumnGap``
+- ``ScrollMarginTop``
 
 ### Grid and Flexbox
 
@@ -94,9 +97,16 @@ Rule(.class("hero")) {
 - ``BorderRadius``
 - ``BorderStyle``
 - ``BorderWidth``
+- ``Outline``
 - ``Opacity``
 - ``BoxShadow``
 - ``BackdropFilter``
+
+### Interaction
+
+- ``PointerEvents``
+- ``Cursor``
+- ``Resize``
 
 ### Motion and Transforms
 

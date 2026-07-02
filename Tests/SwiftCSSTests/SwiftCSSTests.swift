@@ -117,6 +117,37 @@ import Testing
     #expect(TransitionDuration(.seconds(0.2)).render(prettyPrinted: false) == "transition-duration:0.2s;")
 }
 
+@Test func visualModifierPropertiesRenderCSS() {
+    #expect(Overflow(.hidden).render() == "overflow: hidden;")
+    #expect(Overflow(.visible).render() == "overflow: visible;")
+    #expect(Overflow(.scroll).render() == "overflow: scroll;")
+    #expect(Overflow(.auto).render() == "overflow: auto;")
+    
+    #expect(ObjectFit(.cover).render() == "object-fit: cover;")
+    #expect(ObjectFit(.contain).render() == "object-fit: contain;")
+    #expect(ObjectFit(.fill).render() == "object-fit: fill;")
+    #expect(ObjectFit(.none).render() == "object-fit: none;")
+    #expect(ObjectFit(.scaleDown).render() == "object-fit: scale-down;")
+    
+    #expect(PointerEvents(.none).render() == "pointer-events: none;")
+    #expect(PointerEvents(.auto).render() == "pointer-events: auto;")
+    
+    #expect(Cursor(.pointer).render() == "cursor: pointer;")
+    #expect(Cursor(.default).render() == "cursor: default;")
+    #expect(Cursor(.text).render() == "cursor: text;")
+    #expect(Cursor(.notAllowed).render() == "cursor: not-allowed;")
+    #expect(Cursor(.grab).render() == "cursor: grab;")
+    #expect(Cursor(.grabbing).render() == "cursor: grabbing;")
+    
+    #expect(Resize(.none).render() == "resize: none;")
+    #expect(Resize(.both).render() == "resize: both;")
+    #expect(Resize(.horizontal).render() == "resize: horizontal;")
+    #expect(Resize(.vertical).render() == "resize: vertical;")
+    
+    #expect(Outline(.none).render() == "outline: none;")
+    #expect(ScrollMarginTop(.px(84)).render() == "scroll-margin-top: 84px;")
+}
+
 @Test func typographyPropertiesRenderCSS() {
     #expect(TextTransform(.uppercase).render() == "text-transform: uppercase;")
     #expect(TextTransform(.lowercase).render() == "text-transform: lowercase;")
