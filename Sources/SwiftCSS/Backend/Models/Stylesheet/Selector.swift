@@ -90,12 +90,6 @@ internal struct Selector: Sendable {
     init(list: [[SelectorPart]]) {
         self.selectors = list.map(ComplexSelector.init)
     }
-    
-    var rawValue: String {
-        selectors
-            .map(\.rawValue)
-            .joined(separator: ", ")
-    }
 }
 
 internal enum SelectorFragment: Sendable {
@@ -113,25 +107,6 @@ internal enum SimpleSelector: Sendable {
     case pseudoClass(String)
     case pseudoElement(String)
     case raw(String)
-    
-    var rawValue: String {
-        switch self {
-        case let .class(value):
-            ".\(value)"
-        case let .id(value):
-            "#\(value)"
-        case let .element(value):
-            value
-        case .universal:
-            "*"
-        case let .pseudoClass(value):
-            ":\(value)"
-        case let .pseudoElement(value):
-            "::\(value)"
-        case let .raw(value):
-            value
-        }
-    }
 }
 
 internal struct CompoundSelector: Sendable {
@@ -140,12 +115,6 @@ internal struct CompoundSelector: Sendable {
     
     init(_ simpleSelectors: [SimpleSelector]) {
         self.simpleSelectors = simpleSelectors
-    }
-    
-    var rawValue: String {
-        simpleSelectors
-            .map(\.rawValue)
-            .joined()
     }
 }
 
@@ -163,24 +132,12 @@ internal struct ComplexSelector: Sendable {
         
         self = builder.build()
     }
-    
-    var rawValue: String {
-        (
-            [compoundSelector.rawValue] +
-            combinators.map(\.rawValue)
-        )
-        .joined()
-    }
 }
 
 internal struct SelectorCombinatorStep: Sendable {
     
     let combinator: SelectorCombinator
     let selector: CompoundSelector
-    
-    var rawValue: String {
-        "\(combinator.rawValue)\(selector.rawValue)"
-    }
 }
 
 internal enum SelectorCombinator: Sendable {
@@ -189,19 +146,6 @@ internal enum SelectorCombinator: Sendable {
     case child
     case adjacentSibling
     case generalSibling
-    
-    var rawValue: String {
-        switch self {
-        case .descendant:
-            " "
-        case .child:
-            " > "
-        case .adjacentSibling:
-            " + "
-        case .generalSibling:
-            " ~ "
-        }
-    }
 }
 
 private struct ComplexSelectorBuilder {

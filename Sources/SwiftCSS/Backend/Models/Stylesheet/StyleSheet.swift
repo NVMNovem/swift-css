@@ -14,18 +14,4 @@ public struct StyleSheet: CSSRenderable {
     ) {
         self.rules = rules()
     }
-    
-    public func render(using renderer: CSSRenderer) {
-        for (index, rule) in rules.enumerated() {
-            if index > 0 {
-                renderer.writeLineBreak()
-                
-                if renderer.prettyPrinted {
-                    renderer.writeLineBreak()
-                }
-            }
-            
-            rule.render(using: renderer)
-        }
-    }
 }

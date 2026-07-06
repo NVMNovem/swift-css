@@ -1,11 +1,11 @@
 # Rendering CSS
 
-Render SwiftCSS values to pretty-printed or compact CSS.
+Render SwiftCSS model values to CSS text or debug output.
 
 ## Overview
 
-Any type conforming to ``CSSRenderable`` can render itself with the convenience
-APIs provided by SwiftCSS.
+SwiftCSS model values can be rendered with the convenience APIs provided by the
+package. These APIs delegate to ``CSSStringRenderer``.
 
 ```swift
 let stylesheet = StyleSheet {
@@ -31,23 +31,39 @@ let css = stylesheet.render(
 )
 ```
 
-Use ``CSSRenderer`` directly when integrating a custom ``CSSOutputStream``.
-Most code can call the `render` convenience methods instead.
+Use ``CSSStringRenderer`` directly when you want an explicit renderer value.
+
+```swift
+let renderer = CSSStringRenderer(
+    options: CSSRenderOptions(prettyPrinted: false)
+)
+
+let css = renderer.render(stylesheet)
+```
+
+Use ``CSSTreeDumpRenderer`` when you need stable debug output from the same CSS
+model.
+
+```swift
+let dump = CSSTreeDumpRenderer().render(stylesheet)
+```
+
+Custom renderers can conform to ``CSSRendererProtocol`` and traverse the same
+``StyleSheet`` and ``Rule`` data.
 
 ## Topics
 
-### Renderable Values
+### Model Values
 
 - ``CSSRenderable``
 - ``CSSProperty``
 
+### Renderers
+
+- ``CSSRendererProtocol``
+- ``CSSStringRenderer``
+- ``CSSTreeDumpRenderer``
+
 ### Renderer Configuration
 
 - ``CSSRenderOptions``
-- ``CSSRenderContext``
-- ``CSSRenderer``
-
-### Output Streams
-
-- ``CSSOutputStream``
-- ``CSSStringOutputStream``

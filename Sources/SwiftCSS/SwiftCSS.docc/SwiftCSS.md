@@ -4,9 +4,10 @@ Build CSS stylesheets with a Swift result-builder DSL.
 
 ## Overview
 
-SwiftCSS models CSS as small renderable Swift values. Use ``StyleSheet`` as the
-root, add qualified rules with ``Rule``, choose typed property wrappers such as
-``Display`` and ``Padding``, and render the result to formatted or compact CSS.
+SwiftCSS models CSS as Swift data. Use ``StyleSheet`` as the root, add
+qualified rules with ``Rule``, choose typed property wrappers such as
+``Display`` and ``Padding``, and pass the model to a renderer for formatted CSS,
+compact CSS, or debug output.
 
 ```swift
 import SwiftCSS
@@ -34,9 +35,10 @@ let css = stylesheet.render()
 ```
 
 SwiftCSS keeps first-class declarations intentionally simple: each property
-stores a CSS property name and rendered value, while reusable value wrappers
-provide typed construction for common CSS units and keywords. Use ``RawProperty``
-when the package does not yet expose a dedicated property wrapper.
+stores a CSS property name and value, while reusable value wrappers provide
+typed construction for common CSS units and keywords. ``CSSStringRenderer`` owns
+CSS text output. Use ``RawProperty`` when the package does not yet expose a
+dedicated property wrapper.
 
 ## Topics
 
@@ -155,8 +157,7 @@ when the package does not yet expose a dedicated property wrapper.
 ### Rendering
 
 - ``CSSRenderable``
-- ``CSSRenderer``
+- ``CSSRendererProtocol``
+- ``CSSStringRenderer``
+- ``CSSTreeDumpRenderer``
 - ``CSSRenderOptions``
-- ``CSSRenderContext``
-- ``CSSOutputStream``
-- ``CSSStringOutputStream``

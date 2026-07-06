@@ -36,7 +36,7 @@ let headings = Rule.list(
 }
 ```
 
-Use at-rule nodes wherever a stylesheet-level renderable is accepted.
+Use at-rule nodes wherever a stylesheet-level model node is accepted.
 
 ```swift
 let responsive = StyleSheet {

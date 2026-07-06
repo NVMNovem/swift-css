@@ -7,7 +7,7 @@
 
 public struct MediaCondition: Sendable {
     
-    private let query: Query
+    let query: Query
     
     private init(_ query: Query) {
         self.query = query
@@ -43,16 +43,5 @@ internal extension MediaCondition {
         
         case feature(String, String)
         case raw(String)
-    }
-    
-    func rawValue(prettyPrinted: Bool) -> String {
-        switch query {
-        case let .feature(name, value):
-            let separator = prettyPrinted ? ": " : ":"
-            
-            return "(\(name)\(separator)\(value))"
-        case let .raw(value):
-            return value
-        }
     }
 }

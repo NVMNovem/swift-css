@@ -10,20 +10,3 @@ public protocol CSSProperty: CSSRenderable, Sendable {
     var name: String { get }
     var value: String { get }
 }
-
-public extension CSSProperty {
-    
-    func render(using renderer: CSSRenderer) {
-        if renderer.prettyPrinted {
-            renderer.write(name)
-            renderer.write(": ")
-            renderer.write(value)
-            renderer.write(";")
-        } else {
-            renderer.write(name)
-            renderer.write(":")
-            renderer.write(value)
-            renderer.write(";")
-        }
-    }
-}
