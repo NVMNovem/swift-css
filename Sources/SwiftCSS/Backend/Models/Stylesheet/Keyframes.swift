@@ -2,7 +2,7 @@
 //  Keyframes.swift
 //  swift-css
 //
-//  Created by Codex on 12/06/2026.
+//  Created by Damian Van de Kauter on 12/06/2026.
 //
 
 public struct Keyframes: CSSRenderable {
@@ -16,14 +16,6 @@ public struct Keyframes: CSSRenderable {
     ) {
         self.name = name
         self.frames = frames()
-    }
-    
-    public func render(using renderer: CSSRenderer) {
-        CSSBlockRenderer.renderRenderableBlock(
-            header: "@keyframes \(name)",
-            children: frames,
-            using: renderer
-        )
     }
 }
 
@@ -39,14 +31,6 @@ public struct Keyframe: CSSRenderable {
         self.selector = selector
         self.properties = properties()
     }
-    
-    public func render(using renderer: CSSRenderer) {
-        CSSBlockRenderer.renderPropertyBlock(
-            header: selector.rawValue,
-            properties: properties,
-            using: renderer
-        )
-    }
 }
 
 public enum KeyframeSelector: Sendable {
@@ -55,20 +39,4 @@ public enum KeyframeSelector: Sendable {
     case to
     case percent(Int)
     case raw(String)
-}
-
-public extension KeyframeSelector {
-    
-    var rawValue: String {
-        switch self {
-        case .from:
-            "from"
-        case .to:
-            "to"
-        case let .percent(value):
-            "\(value)%"
-        case let .raw(value):
-            value
-        }
-    }
 }

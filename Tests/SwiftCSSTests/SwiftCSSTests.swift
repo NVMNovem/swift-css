@@ -435,3 +435,106 @@ import Testing
         stylesheet.render(prettyPrinted: false) == "@media (prefers-color-scheme:dark) {:root {--text:#fff;}}@supports (display:grid) {.layout {display:grid;}}@layer components {.card {padding:1rem;}}@keyframes pulse {from {opacity:0;}to {opacity:1;}}"
     )
 }
+
+@Test func cssStringRendererMatchesConvenienceRendering() {
+    let stylesheet = StyleSheet {
+        Rule(.class("card")) {
+            Color(.css("var(--text)"))
+            Width(.percent(100))
+            Overflow(.hidden)
+            GridTemplateColumns("repeat(2, minmax(0, 1fr))")
+            TextTransform(.uppercase)
+        }
+        
+        Media(.maxWidth(.px(760))) {
+            Rule(.class("card")) {
+                Width(.percent(100))
+            }
+        }
+    }
+    
+    let renderer = CSSStringRenderer(options: .init(prettyPrinted: false))
+    
+    #expect(renderer.render(stylesheet) == stylesheet.render(prettyPrinted: false))
+    #expect(renderer.render(Rule(.class("card")) { Width(.px(320)) }) == ".card {width:320px;}")
+}
+
+@Test func sameStylesheetCanRenderAsCSSAndTreeDump() {
+    let stylesheet = StyleSheet {
+        Rule(.class("button")) {
+            Color(.css("var(--accent)"))
+            Padding(.px(12))
+        }
+    }
+    
+    #expect(
+        CSSStringRenderer(options: .init(prettyPrinted: false)).render(stylesheet) == ".button {color:var(--accent);padding:12px;}"
+    )
+    
+    #expect(
+        CSSTreeDumpRenderer().render(stylesheet) == """
+        Stylesheet
+        └─ Rule
+           ├─ selector: .button
+           ├─ color: var(--accent)
+           └─ padding: 12px
+        """
+    )
+}
+
+@Test func treeDumpRendererRendersStableDebugTree() {
+    let stylesheet = StyleSheet {
+        Rule(.class("button"), .hover) {
+            RawProperty("--accent", "#09f")
+            Overflow(.hidden)
+        }
+        
+        Supports(.display(.grid)) {
+            Rule(.class("layout")) {
+                GridTemplateColumns("1fr 1fr")
+            }
+        }
+        
+        Media(.maxWidth(.px(760))) {
+            Rule(.element("main")) {
+                Width(.percent(100))
+            }
+        }
+        
+        Layer.order("reset", "components")
+        
+        Keyframes("fade") {
+            Keyframe(.from) {
+                RawProperty("opacity", "0")
+            }
+            
+            Keyframe(.to) {
+                RawProperty("opacity", "1")
+            }
+        }
+    }
+    
+    #expect(
+        CSSTreeDumpRenderer().render(stylesheet) == """
+        Stylesheet
+        ├─ Rule
+        │  ├─ selector: .button:hover
+        │  ├─ --accent: #09f
+        │  └─ overflow: hidden
+        ├─ @supports (display: grid)
+        │  └─ Rule
+        │     ├─ selector: .layout
+        │     └─ grid-template-columns: 1fr 1fr
+        ├─ @media (max-width: 760px)
+        │  └─ Rule
+        │     ├─ selector: main
+        │     └─ width: 100%
+        ├─ @layer reset, components;
+        └─ @keyframes fade
+           ├─ Keyframe from
+           │  └─ opacity: 0
+           └─ Keyframe to
+              └─ opacity: 1
+        """
+    )
+}

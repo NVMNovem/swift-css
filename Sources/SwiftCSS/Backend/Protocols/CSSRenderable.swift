@@ -6,8 +6,6 @@
 //
 
 public protocol CSSRenderable {
-    
-    func render(using renderer: CSSRenderer)
 }
 
 public extension CSSRenderable {
@@ -15,7 +13,7 @@ public extension CSSRenderable {
     func render(
         options: CSSRenderOptions = .init()
     ) -> String {
-        CSSRenderer(options: options).render(self)
+        CSSStringRenderer(options: options).render(self)
     }
     
     func render(prettyPrinted: Bool) -> String {

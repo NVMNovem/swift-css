@@ -17,14 +17,6 @@ public struct MediaRule: CSSRenderable {
         self.condition = condition
         self.rules = rules()
     }
-    
-    public func render(using renderer: CSSRenderer) {
-        CSSBlockRenderer.renderRenderableBlock(
-            header: "@media \(condition.rawValue(prettyPrinted: renderer.prettyPrinted))",
-            children: rules,
-            using: renderer
-        )
-    }
 }
 
 public typealias Media = MediaRule
