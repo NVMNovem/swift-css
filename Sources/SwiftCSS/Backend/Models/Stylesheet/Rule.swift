@@ -6,13 +6,12 @@
 //
 
 public struct Rule: CSSRenderable {
-    
-    let selector: Selector
-    public let properties: [any CSSProperty]
+
+    public let cssNode: CSSNode
     
     public init(
         _ selectorParts: SelectorPart...,
-        @CSSPropertyBuilder properties: () -> [any CSSProperty]
+        @CSSPropertyBuilder properties: () -> [CSSDeclaration]
     ) {
         self.init(
             selectorParts,
@@ -22,27 +21,30 @@ public struct Rule: CSSRenderable {
     
     public init(
         _ selectorParts: [SelectorPart],
-        @CSSPropertyBuilder properties: () -> [any CSSProperty]
+        @CSSPropertyBuilder properties: () -> [CSSDeclaration]
     ) {
-        self.selector = Selector(selectorParts)
-        self.properties = properties()
+        self.cssNode = .rule(
+            .init(
+                selector: Selector(selectorParts).cssNode,
+                declarations: properties()
+            )
+        )
     }
     
     public static func list(
         _ selectors: [[SelectorPart]],
-        @CSSPropertyBuilder properties: () -> [any CSSProperty]
+        @CSSPropertyBuilder properties: () -> [CSSDeclaration]
     ) -> Self {
         .init(
-            selector: Selector(list: selectors),
-            properties: properties()
+            selector: Selector(list: selectors).cssNode,
+            declarations: properties()
         )
     }
     
     init(
-        selector: Selector,
-        properties: [any CSSProperty]
+        selector: CSSSelectorNode,
+        declarations: [CSSDeclaration]
     ) {
-        self.selector = selector
-        self.properties = properties
+        self.cssNode = .rule(.init(selector: selector, declarations: declarations))
     }
 }

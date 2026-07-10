@@ -9,6 +9,5 @@ public protocol CSSRendererProtocol {
     
     associatedtype Output
     
-    func render(_ stylesheet: StyleSheet) -> Output
-    func render(_ rule: Rule) -> Output
+    func render(_ node: CSSNode) -> Output
 }

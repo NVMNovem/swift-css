@@ -38,6 +38,15 @@ public extension MediaCondition {
 }
 
 internal extension MediaCondition {
+
+    var cssNode: CSSConditionNode {
+        switch query {
+        case let .feature(name, value):
+            .feature(name: name, value: value)
+        case let .raw(value):
+            .raw(value)
+        }
+    }
     
     enum Query: Sendable {
         

@@ -2,209 +2,177 @@
 //  CSSStringRenderer.swift
 //  swift-css
 //
-//  Created by Damian Van de Kauter on 06/07/2026.
-//
 
 public struct CSSStringRenderer: CSSRendererProtocol {
-    
+
     public let options: CSSRenderOptions
-    
+
     public init(options: CSSRenderOptions = .init()) {
         self.options = options
     }
-    
-    public func render(_ stylesheet: StyleSheet) -> String {
-        Engine(options: options).render(stylesheet)
+
+    public func render(_ node: CSSNode) -> String {
+        Engine(options: options).render(node)
     }
-    
-    public func render(_ rule: Rule) -> String {
-        Engine(options: options).render(rule)
-    }
-    
-    public func render(_ renderable: any CSSRenderable) -> String {
-        Engine(options: options).render(renderable)
-    }
-    
-    public func render(_ property: any CSSProperty) -> String {
-        Engine(options: options).render(property)
+
+    public func render<Node: CSSNodeConvertible>(_ node: Node) -> String {
+        render(node.cssNode)
     }
 }
 
 private final class Engine {
-    
+
     private var output = ""
     private var indentationLevel = 0
     private let options: CSSRenderOptions
-    
+
     init(options: CSSRenderOptions) {
         self.options = options
     }
-    
-    func render(_ stylesheet: StyleSheet) -> String {
-        renderStylesheet(stylesheet)
+
+    func render(_ node: CSSNode) -> String {
+        renderNode(node)
         return output
     }
-    
-    func render(_ rule: Rule) -> String {
-        renderRule(rule)
-        return output
-    }
-    
-    func render(_ renderable: any CSSRenderable) -> String {
-        renderRenderable(renderable)
-        return output
-    }
-    
-    func render(_ property: any CSSProperty) -> String {
-        renderProperty(property)
-        return output
-    }
-    
-    private func renderStylesheet(_ stylesheet: StyleSheet) {
-        for (index, rule) in stylesheet.rules.enumerated() {
-            if index > 0 {
-                writeLineBreak()
-                
-                if options.prettyPrinted {
-                    writeLineBreak()
-                }
-            }
-            
-            renderRenderable(rule)
-        }
-    }
-    
-    private func renderRenderable(_ renderable: any CSSRenderable) {
-        switch renderable {
-        case let stylesheet as StyleSheet:
-            renderStylesheet(stylesheet)
-        case let rule as Rule:
-            renderRule(rule)
-        case let mediaRule as MediaRule:
-            renderBlock(
-                header: "@media \(render(mediaRule.condition))",
-                children: mediaRule.rules
+
+    private func renderNode(_ node: CSSNode) {
+        switch node {
+        case let .stylesheet(stylesheet):
+            renderChildren(stylesheet.children, separated: true)
+        case let .rule(rule):
+            renderDeclarationBlock(
+                header: render(rule.selector),
+                declarations: rule.declarations
             )
-        case let supports as Supports:
+        case let .media(media):
+            renderBlock(
+                header: "@media \(render(media.condition))",
+                children: media.children
+            )
+        case let .supports(supports):
             renderBlock(
                 header: "@supports \(render(supports.condition))",
-                children: supports.rules
+                children: supports.children
             )
-        case let layer as Layer:
+        case let .layer(layer):
             renderBlock(
                 header: layer.name.map { "@layer \($0)" } ?? "@layer",
-                children: layer.rules
+                children: layer.children
             )
-        case let layerOrder as LayerOrder:
+        case let .layerOrder(order):
             write("@layer ")
-            write(layerOrder.names.joined(separator: ", "))
+            write(order.names.joined(separator: ", "))
             write(";")
-        case let keyframes as Keyframes:
+        case let .keyframes(keyframes):
             renderBlock(
                 header: "@keyframes \(keyframes.name)",
                 children: keyframes.frames
             )
-        case let keyframe as Keyframe:
-            renderPropertyBlock(
+        case let .keyframe(keyframe):
+            renderDeclarationBlock(
                 header: render(keyframe.selector),
-                properties: keyframe.properties
+                declarations: keyframe.declarations
             )
-        case let property as any CSSProperty:
-            renderProperty(property)
-        default:
-            fatalError("Unsupported CSS renderable: \(type(of: renderable))")
+        case let .declaration(declaration):
+            renderDeclaration(declaration)
         }
     }
-    
-    private func renderRule(_ rule: Rule) {
-        renderPropertyBlock(
-            header: render(rule.selector),
-            properties: rule.properties
-        )
+
+    private func renderChildren(_ children: [CSSNode], separated: Bool) {
+        for (index, child) in children.enumerated() {
+            if separated && index > 0 {
+                writeLineBreak()
+                writeLineBreak()
+            }
+
+            renderNode(child)
+        }
     }
-    
-    private func renderBlock(
-        header: String,
-        children: [any CSSRenderable]
-    ) {
+
+    private func renderBlock(header: String, children: [CSSNode]) {
         write(header)
         write(" {")
-        
+
         guard !children.isEmpty else {
             write("}")
             return
         }
-        
+
         if options.prettyPrinted {
             indentationLevel += 1
-            
+
             for (index, child) in children.enumerated() {
                 writeLineBreak()
-                
+
                 if index > 0 {
                     writeLineBreak()
                 }
-                
+
                 writeIndentation()
-                renderRenderable(child)
+                renderNode(child)
             }
-            
+
             indentationLevel -= 1
             writeLineBreak()
             writeIndentation()
-            write("}")
         } else {
-            for child in children {
-                renderRenderable(child)
-            }
-            
-            write("}")
+            renderChildren(children, separated: false)
         }
+
+        write("}")
     }
-    
-    private func renderPropertyBlock(
+
+    private func renderDeclarationBlock(
         header: String,
-        properties: [any CSSProperty]
+        declarations: [CSSDeclaration]
     ) {
         write(header)
         write(" {")
-        
-        guard !properties.isEmpty else {
+
+        guard !declarations.isEmpty else {
             write("}")
             return
         }
-        
+
         if options.prettyPrinted {
             indentationLevel += 1
-            
-            for property in properties {
+
+            for declaration in declarations {
                 writeLineBreak()
                 writeIndentation()
-                renderProperty(property)
+                renderDeclaration(declaration)
             }
-            
+
             indentationLevel -= 1
             writeLineBreak()
             writeIndentation()
-            write("}")
         } else {
-            for property in properties {
-                renderProperty(property)
+            for declaration in declarations {
+                renderDeclaration(declaration)
             }
-            
-            write("}")
+        }
+
+        write("}")
+    }
+
+    private func renderDeclaration(_ declaration: CSSDeclaration) {
+        switch declaration {
+        case let .property(node):
+            renderDeclaration(property: node.property, value: node.value)
+        case let .raw(node):
+            renderDeclaration(property: node.property, value: node.value)
         }
     }
-    
-    private func renderProperty(_ property: any CSSProperty) {
-        write(property.name)
+
+    private func renderDeclaration(property: String, value: String) {
+        write(property)
         write(options.prettyPrinted ? ": " : ":")
-        write(property.value)
+        write(value)
         write(";")
     }
-    
-    private func render(_ condition: MediaCondition) -> String {
-        switch condition.query {
+
+    private func render(_ condition: CSSConditionNode) -> String {
+        switch condition {
         case let .feature(name, value):
             let separator = options.prettyPrinted ? ": " : ":"
             return "(\(name)\(separator)\(value))"
@@ -212,18 +180,8 @@ private final class Engine {
             return value
         }
     }
-    
-    private func render(_ condition: SupportsCondition) -> String {
-        switch condition.query {
-        case let .property(name, value):
-            let separator = options.prettyPrinted ? ": " : ":"
-            return "(\(name)\(separator)\(value))"
-        case let .raw(value):
-            return value
-        }
-    }
-    
-    private func render(_ selector: KeyframeSelector) -> String {
+
+    private func render(_ selector: CSSKeyframeSelectorNode) -> String {
         switch selector {
         case .from:
             "from"
@@ -235,32 +193,24 @@ private final class Engine {
             value
         }
     }
-    
-    private func render(_ selector: Selector) -> String {
-        selector.selectors
-            .map(render)
-            .joined(separator: ", ")
+
+    private func render(_ selector: CSSSelectorNode) -> String {
+        selector.selectors.map { render($0) }.joined(separator: ", ")
     }
-    
-    private func render(_ selector: ComplexSelector) -> String {
-        (
-            [render(selector.compoundSelector)] +
-            selector.combinators.map(render)
-        )
-        .joined()
+
+    private func render(_ selector: CSSComplexSelectorNode) -> String {
+        ([render(selector.head)] + selector.tail.map { render($0) }).joined()
     }
-    
-    private func render(_ selector: CompoundSelector) -> String {
-        selector.simpleSelectors
-            .map(render)
-            .joined()
+
+    private func render(_ selector: CSSCompoundSelectorNode) -> String {
+        selector.selectors.map { render($0) }.joined()
     }
-    
-    private func render(_ step: SelectorCombinatorStep) -> String {
+
+    private func render(_ step: CSSSelectorCombinatorNode) -> String {
         "\(render(step.combinator))\(render(step.selector))"
     }
-    
-    private func render(_ combinator: SelectorCombinator) -> String {
+
+    private func render(_ combinator: CSSSelectorCombinator) -> String {
         switch combinator {
         case .descendant:
             " "
@@ -272,8 +222,8 @@ private final class Engine {
             " ~ "
         }
     }
-    
-    private func render(_ selector: SimpleSelector) -> String {
+
+    private func render(_ selector: CSSSimpleSelectorNode) -> String {
         switch selector {
         case let .class(value):
             ".\(value)"
@@ -291,29 +241,20 @@ private final class Engine {
             value
         }
     }
-    
+
     private func write(_ string: String) {
         output += string
     }
-    
+
     private func writeLineBreak() {
-        guard options.prettyPrinted else {
-            return
+        if options.prettyPrinted {
+            write("\n")
         }
-        
-        write("\n")
     }
-    
+
     private func writeIndentation() {
-        guard options.prettyPrinted else {
-            return
+        if options.prettyPrinted {
+            write(String(repeating: options.indentation, count: indentationLevel))
         }
-        
-        write(
-            String(
-                repeating: options.indentation,
-                count: indentationLevel
-            )
-        )
     }
 }

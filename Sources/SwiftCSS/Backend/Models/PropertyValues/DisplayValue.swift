@@ -5,21 +5,26 @@
 //  Created by Damian Van de Kauter on 07/06/2026.
 //
 
-public struct DisplayValue: CSSValue, Sendable, ExpressibleByStringLiteral {
-    
+public struct DisplayValue: CSSValue, Sendable {
+
     public let rawValue: String
-    
+
     public init(_ rawValue: String) {
         self.rawValue = rawValue
     }
-    
+}
+
+#if SWIFTCSS_ENABLE_STRING_LITERALS
+extension DisplayValue: ExpressibleByStringLiteral {
+
     public init(stringLiteral value: StringLiteralType) {
         self.rawValue = value
     }
 }
+#endif
 
 public extension DisplayValue {
-    
+
     static let block: Self = .init("block")
     static let inline: Self = .init("inline")
     static let inlineBlock: Self = .init("inline-block")

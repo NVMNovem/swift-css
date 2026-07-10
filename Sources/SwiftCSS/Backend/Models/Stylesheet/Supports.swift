@@ -6,16 +6,14 @@
 //
 
 public struct Supports: CSSRenderable {
-    
-    public let condition: SupportsCondition
-    public let rules: [any CSSRenderable]
+
+    public let cssNode: CSSNode
     
     public init(
         _ condition: SupportsCondition,
-        @CSSBuilder rules: () -> [any CSSRenderable]
+        @CSSBuilder rules: () -> [CSSNode]
     ) {
-        self.condition = condition
-        self.rules = rules()
+        self.cssNode = .supports(.init(condition: condition.cssNode, children: rules()))
     }
 }
 
@@ -51,6 +49,15 @@ public extension SupportsCondition {
 }
 
 internal extension SupportsCondition {
+
+    var cssNode: CSSConditionNode {
+        switch query {
+        case let .property(name, value):
+            .feature(name: name, value: value)
+        case let .raw(value):
+            .raw(value)
+        }
+    }
     
     enum Query: Sendable {
         
