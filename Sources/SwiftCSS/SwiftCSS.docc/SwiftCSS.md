@@ -45,8 +45,10 @@ dedicated property wrapper.
 ### Getting Started
 
 - <doc:Building-Stylesheets>
+- <doc:Architecture>
 - <doc:CSS-Properties>
 - <doc:Rendering-CSS>
+- <doc:Embedded-Compatibility>
 - <doc:Previewing-DocC>
 
 ### Stylesheets and Rules
@@ -156,6 +158,10 @@ dedicated property wrapper.
 
 ### Rendering
 
+- ``CSSNode``
+- ``CSSNodeConvertible``
+- ``CSSDeclaration``
+- ``CSSDeclarationConvertible``
 - ``CSSRenderable``
 - ``CSSRendererProtocol``
 - ``CSSStringRenderer``

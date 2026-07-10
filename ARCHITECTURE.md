@@ -1,69 +1,86 @@
 # SwiftCSS Architecture
 
-SwiftCSS is a CSS AST/model package. It owns CSS values, properties,
-declarations, rules, at-rules, and stylesheets as Swift data. Renderers own
-output formats.
+SwiftCSS has two distinct layers:
 
-## Model Boundary
+```text
+Public SwiftCSS DSL
+        ↓
+Concrete CSS AST
+        ↓
+CSSStringRenderer
+CSSTreeDumpRenderer
+Future CSSOMRenderer
+```
 
-Model/data types:
+## 1. Public Typed DSL
 
-- `CSSValue`, `Length`, `Percentage`, `Color`, `Time`, `Angle`, and keyword
-  value types store CSS value data.
-- `CSSProperty` and concrete property wrappers such as `Width`, `Color`,
-  `GridTemplateColumns`, `TextTransform`, `Overflow`, and `RawProperty` store a
-  property name and value.
-- `SelectorPart`, `Selector`, `Rule`, `StyleSheet`, `MediaRule`, `Supports`,
-  `Layer`, `LayerOrder`, `Keyframes`, and `Keyframe` store stylesheet
-  structure.
-- `CSSBuilder` and `CSSPropertyBuilder` collect model nodes; they do not render
-  output.
+The public authoring layer keeps readable Swift types such as `StyleSheet`,
+`Rule`, `Width`, `Color`, `Display`, `Padding`, selectors, media conditions,
+supports rules, layers, and keyframes. Typed value wrappers such as `Length`,
+`Percentage`, `Time`, and `Angle` retain explicit initializers and helpers.
+
+Property structs conform to `CSSProperty`, whose default lowering produces a
+concrete `CSSDeclaration`. `RawProperty` explicitly lowers to the raw
+declaration case. Stylesheet-level DSL types conform to `CSSNodeConvertible`
+and expose their lowered `cssNode`.
+
+`CSSBuilder` and `CSSPropertyBuilder` lower each generic DSL expression as it
+enters a result builder. Their stored and returned arrays contain only
+`CSSNode` or `CSSDeclaration`; optionals, conditionals, loops, and arrays are
+flattened without protocol existential storage.
+
+## 2. Concrete Renderer Model
+
+`CSSNode` is the recursive renderer input. Its exhaustive cases cover:
+
+- stylesheets and qualified rules;
+- media and supports blocks;
+- named and anonymous layers plus layer ordering;
+- keyframes and individual keyframe blocks;
+- standalone declarations.
+
+Supporting concrete values include `CSSStylesheetNode`, `CSSRuleNode`,
+`CSSConditionalRuleNode`, `CSSLayerNode`, `CSSKeyframesNode`,
+`CSSDeclaration`, `CSSConditionNode`, and the concrete selector model rooted at
+`CSSSelectorNode`.
+
+Selectors remain ergonomic in the public DSL through `SelectorPart.class`,
+`.id`, `.element`, pseudo selectors, and combinators. Lowering converts them to
+concrete simple, compound, complex, and combinator nodes. Renderers never
+inspect public selector types dynamically.
 
 ## Renderer Boundary
 
-`CSSRendererProtocol` defines renderer entry points for stylesheets and rules:
+`CSSRendererProtocol` accepts one concrete input:
 
 ```swift
 public protocol CSSRendererProtocol {
     associatedtype Output
 
-    func render(_ stylesheet: StyleSheet) -> Output
-    func render(_ rule: Rule) -> Output
+    func render(_ node: CSSNode) -> Output
 }
 ```
 
-`CSSStringRenderer` renders CSS text. It owns selector output, declaration
-output, property/value formatting, at-rule output, indentation, pretty
-printing, raw properties, and nested rule/at-rule output.
+`CSSStringRenderer` owns CSS syntax, selector formatting, condition formatting,
+declarations, braces, nested at-rules, keyframes, indentation, and pretty or
+compact output. `CSSTreeDumpRenderer` walks the same AST to produce stable debug
+output. Both use exhaustive switches over concrete enums.
 
-`CSSTreeDumpRenderer` renders a stable debug tree from the same model. It is a
-small proof that the model can be traversed by non-CSS-text renderers.
+Conveniences such as `stylesheet.render()` and `rule.render()` are thin
+wrappers: they obtain `cssNode` and pass it to `CSSStringRenderer`. Renderer
+generic conveniences do the same before entering the concrete rendering
+engine.
 
-Convenience APIs such as `stylesheet.render()` and `rule.render()` remain thin
-wrappers around `CSSStringRenderer`.
+## Why This Boundary Exists
 
-Future renderers, such as a `CSSOMRenderer` or richer debug renderer, should
-walk the existing `StyleSheet`, `Rule`, property, selector, and at-rule model
-instead of adding output logic to those model types.
+The two-layer design:
 
-## Audit Notes
+- avoids protocol existential storage and traversal;
+- avoids dynamic casts and reflection-based discovery;
+- supports Embedded Swift restrictions;
+- preserves typed, capitalized CSS authoring APIs;
+- lets string, debug, and future CSSOM renderers share one stable model.
 
-Before the renderer split, these types were model/data and also knew how to
-render CSS text:
-
-- `CSSProperty` implemented declaration rendering in a protocol extension.
-- `StyleSheet`, `Rule`, `MediaRule`, `Supports`, `Layer`, `LayerOrder`,
-  `Keyframes`, and `Keyframe` implemented `render(using:)`.
-- `CSSBlockRenderer`, `CSSRenderContext`, `CSSOutputStream`,
-  `CSSStringOutputStream`, and `CSSRenderer` were string-output support types.
-- `MediaCondition` and `SupportsCondition` chose pretty/compact colon spacing.
-
-String output was coupled into the model through `CSSRenderable.render(using:)`,
-per-type `render(using:)` implementations, selector `rawValue` helpers,
-condition `rawValue(prettyPrinted:)` helpers, and property declaration rendering
-on `CSSProperty`.
-
-That responsibility now lives in `CSSStringRenderer`. The remaining `rawValue`
-properties on values and some internal selector helpers represent stored CSS
-fragments or model-friendly value serialization, not block layout or output
-format decisions.
+New DSL types should lower at construction time. New renderer features should
+be represented by a concrete AST case and handled exhaustively by every
+renderer rather than discovered from the public type at runtime.

@@ -90,6 +90,10 @@ internal struct Selector: Sendable {
     init(list: [[SelectorPart]]) {
         self.selectors = list.map(ComplexSelector.init)
     }
+
+    var cssNode: CSSSelectorNode {
+        .init(selectors: selectors.map { $0.cssNode })
+    }
 }
 
 internal enum SelectorFragment: Sendable {
@@ -204,6 +208,13 @@ private struct ComplexSelectorBuilder {
 }
 
 private extension ComplexSelector {
+
+    var cssNode: CSSComplexSelectorNode {
+        .init(
+            head: compoundSelector.cssNode,
+            tail: combinators.map { $0.cssNode }
+        )
+    }
     
     init(
         compoundSelector: CompoundSelector,
@@ -211,5 +222,53 @@ private extension ComplexSelector {
     ) {
         self.compoundSelector = compoundSelector
         self.combinators = combinators
+    }
+}
+
+private extension CompoundSelector {
+    var cssNode: CSSCompoundSelectorNode {
+        .init(selectors: simpleSelectors.map { $0.cssNode })
+    }
+}
+
+private extension SelectorCombinatorStep {
+    var cssNode: CSSSelectorCombinatorNode {
+        .init(combinator: combinator.cssNode, selector: selector.cssNode)
+    }
+}
+
+private extension SelectorCombinator {
+    var cssNode: CSSSelectorCombinator {
+        switch self {
+        case .descendant:
+            .descendant
+        case .child:
+            .child
+        case .adjacentSibling:
+            .adjacentSibling
+        case .generalSibling:
+            .generalSibling
+        }
+    }
+}
+
+private extension SimpleSelector {
+    var cssNode: CSSSimpleSelectorNode {
+        switch self {
+        case let .class(value):
+            .class(value)
+        case let .id(value):
+            .id(value)
+        case let .element(value):
+            .element(value)
+        case .universal:
+            .universal
+        case let .pseudoClass(value):
+            .pseudoClass(value)
+        case let .pseudoElement(value):
+            .pseudoElement(value)
+        case let .raw(value):
+            .raw(value)
+        }
     }
 }

@@ -6,30 +6,28 @@
 //
 
 public struct Keyframes: CSSRenderable {
-    
-    public let name: String
-    public let frames: [any CSSRenderable]
+
+    public let cssNode: CSSNode
     
     public init(
         _ name: String,
-        @CSSBuilder frames: () -> [any CSSRenderable]
+        @CSSBuilder frames: () -> [CSSNode]
     ) {
-        self.name = name
-        self.frames = frames()
+        self.cssNode = .keyframes(.init(name: name, frames: frames()))
     }
 }
 
 public struct Keyframe: CSSRenderable {
-    
-    public let selector: KeyframeSelector
-    public let properties: [any CSSProperty]
+
+    public let cssNode: CSSNode
     
     public init(
         _ selector: KeyframeSelector,
-        @CSSPropertyBuilder properties: () -> [any CSSProperty]
+        @CSSPropertyBuilder properties: () -> [CSSDeclaration]
     ) {
-        self.selector = selector
-        self.properties = properties()
+        self.cssNode = .keyframe(
+            .init(selector: selector.cssNode, declarations: properties())
+        )
     }
 }
 
@@ -39,4 +37,19 @@ public enum KeyframeSelector: Sendable {
     case to
     case percent(Int)
     case raw(String)
+}
+
+private extension KeyframeSelector {
+    var cssNode: CSSKeyframeSelectorNode {
+        switch self {
+        case .from:
+            .from
+        case .to:
+            .to
+        case let .percent(value):
+            .percent(value)
+        case let .raw(value):
+            .raw(value)
+        }
+    }
 }

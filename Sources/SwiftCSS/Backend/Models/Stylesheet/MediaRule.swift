@@ -6,16 +6,14 @@
 //
 
 public struct MediaRule: CSSRenderable {
-    
-    public let condition: MediaCondition
-    public let rules: [any CSSRenderable]
+
+    public let cssNode: CSSNode
     
     public init(
         _ condition: MediaCondition,
-        @CSSBuilder rules: () -> [any CSSRenderable]
+        @CSSBuilder rules: () -> [CSSNode]
     ) {
-        self.condition = condition
-        self.rules = rules()
+        self.cssNode = .media(.init(condition: condition.cssNode, children: rules()))
     }
 }
 

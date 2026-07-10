@@ -7,24 +7,32 @@
 
 @resultBuilder
 public enum CSSBuilder {
-    
-    public static func buildBlock(_ components: any CSSRenderable...) -> [any CSSRenderable] {
-        components
+
+    public static func buildExpression<Node: CSSNodeConvertible>(_ expression: Node) -> [CSSNode] {
+        [expression.cssNode]
     }
-    
-    public static func buildArray(_ components: [[any CSSRenderable]]) -> [any CSSRenderable] {
-        components.flatMap(\.self)
+
+    public static func buildExpression(_ expression: CSSNode) -> [CSSNode] {
+        [expression]
     }
-    
-    public static func buildOptional(_ component: [any CSSRenderable]?) -> [any CSSRenderable] {
+
+    public static func buildBlock(_ components: [CSSNode]...) -> [CSSNode] {
+        components.flatMap { $0 }
+    }
+
+    public static func buildArray(_ components: [[CSSNode]]) -> [CSSNode] {
+        components.flatMap { $0 }
+    }
+
+    public static func buildOptional(_ component: [CSSNode]?) -> [CSSNode] {
         component ?? []
     }
-    
-    public static func buildEither(first component: [any CSSRenderable]) -> [any CSSRenderable] {
+
+    public static func buildEither(first component: [CSSNode]) -> [CSSNode] {
         component
     }
-    
-    public static func buildEither(second component: [any CSSRenderable]) -> [any CSSRenderable] {
+
+    public static func buildEither(second component: [CSSNode]) -> [CSSNode] {
         component
     }
 }

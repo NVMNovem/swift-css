@@ -9,6 +9,10 @@ public struct RawProperty: CSSProperty {
     
     public let name: String
     public let value: String
+
+    public var cssDeclaration: CSSDeclaration {
+        .raw(.init(property: name, value: value))
+    }
     
     public init(
         _ name: String,

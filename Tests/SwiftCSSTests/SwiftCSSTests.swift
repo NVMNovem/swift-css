@@ -1,6 +1,109 @@
 import Testing
 @testable import SwiftCSS
 
+private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
+
+@Test func publicPropertyStructsLowerToConcreteDeclarations() {
+    requirePropertyType(Width.self)
+    requirePropertyType(Color.self)
+    requirePropertyType(Display.self)
+    requirePropertyType(Padding.self)
+
+    switch Width(.px(12)).cssDeclaration {
+    case let .property(declaration):
+        #expect(declaration.property == "width")
+        #expect(declaration.value == "12px")
+    case .raw:
+        Issue.record("Width must lower as a typed declaration")
+    }
+
+    switch RawProperty("--accent", "#09f").cssDeclaration {
+    case .property:
+        Issue.record("RawProperty must lower as a raw declaration")
+    case let .raw(declaration):
+        #expect(declaration.property == "--accent")
+        #expect(declaration.value == "#09f")
+    }
+}
+
+@Test func publicDSLLowersToConcreteAST() {
+    let stylesheet = StyleSheet {
+        Rule(.class("button"), .hover) {
+            Display(.flex)
+            Padding(.px(12))
+        }
+    }
+
+    guard case let .stylesheet(root) = stylesheet.cssNode,
+          case let .rule(rule) = root.children.first else {
+        Issue.record("Expected a stylesheet containing a concrete rule node")
+        return
+    }
+
+    #expect(rule.declarations.count == 2)
+    #expect(rule.selector.selectors.count == 1)
+    #expect(rule.selector.selectors[0].head.selectors.count == 2)
+}
+
+@Test func concreteASTRendersThroughBothRenderers() {
+    let selector = CSSSelectorNode(
+        selectors: [
+            .init(
+                head: .init(selectors: [.class("button")]),
+                tail: []
+            )
+        ]
+    )
+    let ast = CSSNode.stylesheet(
+        .init(
+            children: [
+                .rule(
+                    .init(
+                        selector: selector,
+                        declarations: [
+                            .property(.init(property: "display", value: "flex"))
+                        ]
+                    )
+                )
+            ]
+        )
+    )
+
+    #expect(CSSStringRenderer(options: .init(prettyPrinted: false)).render(ast) == ".button {display:flex;}")
+    #expect(
+        CSSTreeDumpRenderer().render(ast) == """
+        Stylesheet
+        └─ Rule
+           ├─ selector: .button
+           └─ display: flex
+        """
+    )
+}
+
+@Test func concreteBuildersSupportConditionalsAndArrays() {
+    let includeColor = true
+    let lengths = [Length.px(8), .px(12)]
+    let selectors = ["one", "two"]
+
+    let stylesheet = StyleSheet {
+        for selector in selectors {
+            Rule(.class(selector)) {
+                if includeColor {
+                    Color("var(--accent)")
+                }
+
+                for length in lengths {
+                    Padding(length)
+                }
+            }
+        }
+    }
+
+    #expect(
+        stylesheet.render(prettyPrinted: false) == ".one {color:var(--accent);padding:8px;padding:12px;}.two {color:var(--accent);padding:8px;padding:12px;}"
+    )
+}
+
 @Test func genericCSSDataTypesRenderRawValues() {
     #expect(Percentage.percent(50).rawValue == "50%")
     #expect(Length.px(24).rawValue == "24px")

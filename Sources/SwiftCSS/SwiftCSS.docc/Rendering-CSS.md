@@ -49,7 +49,7 @@ let dump = CSSTreeDumpRenderer().render(stylesheet)
 ```
 
 Custom renderers can conform to ``CSSRendererProtocol`` and traverse the same
-``StyleSheet`` and ``Rule`` data.
+concrete ``CSSNode`` AST.
 
 ## Topics
 
@@ -57,6 +57,8 @@ Custom renderers can conform to ``CSSRendererProtocol`` and traverse the same
 
 - ``CSSRenderable``
 - ``CSSProperty``
+- ``CSSNode``
+- ``CSSDeclaration``
 
 ### Renderers
 

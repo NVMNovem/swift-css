@@ -6,12 +6,12 @@
 //
 
 public struct StyleSheet: CSSRenderable {
-    
-    public let rules: [any CSSRenderable]
+
+    public let cssNode: CSSNode
     
     public init(
-        @CSSBuilder rules: () -> [any CSSRenderable]
+        @CSSBuilder rules: () -> [CSSNode]
     ) {
-        self.rules = rules()
+        self.cssNode = .stylesheet(.init(children: rules()))
     }
 }

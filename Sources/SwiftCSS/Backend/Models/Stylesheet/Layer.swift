@@ -6,23 +6,20 @@
 //
 
 public struct Layer: CSSRenderable {
-    
-    public let name: String?
-    public let rules: [any CSSRenderable]
+
+    public let cssNode: CSSNode
     
     public init(
         _ name: String,
-        @CSSBuilder rules: () -> [any CSSRenderable]
+        @CSSBuilder rules: () -> [CSSNode]
     ) {
-        self.name = name
-        self.rules = rules()
+        self.cssNode = .layer(.init(name: name, children: rules()))
     }
     
     public init(
-        @CSSBuilder rules: () -> [any CSSRenderable]
+        @CSSBuilder rules: () -> [CSSNode]
     ) {
-        self.name = nil
-        self.rules = rules()
+        self.cssNode = .layer(.init(name: nil, children: rules()))
     }
     
     public static func order(_ names: String...) -> LayerOrder {
@@ -35,8 +32,12 @@ public struct Layer: CSSRenderable {
 }
 
 public struct LayerOrder: CSSRenderable {
-    
+
     public let names: [String]
+
+    public var cssNode: CSSNode {
+        .layerOrder(.init(names: names))
+    }
     
     public init(names: [String]) {
         self.names = names
