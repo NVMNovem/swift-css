@@ -134,6 +134,7 @@ dedicated property wrapper.
 
 - ``CSSValue``
 - ``Length``
+- ``LineHeightValue``
 - ``Percentage``
 - ``Color``
 - ``Time``
