@@ -123,6 +123,12 @@ private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
     #expect(DisplayValue.flex.rawValue == "flex")
     #expect(PositionValue.absolute.rawValue == "absolute")
     #expect(FontWeight.Value.weight(700).rawValue == "700")
+    #expect(LineHeightValue.normal.rawValue == "normal")
+    #expect(LineHeightValue.multiple(1.7).rawValue == "1.7")
+    #expect(LineHeightValue.multiple(1).rawValue == "1")
+    #expect(LineHeightValue.length(.px(28)).rawValue == "28px")
+    #expect(LineHeightValue.length(.rem(1.5)).rawValue == "1.5rem")
+    #expect(LineHeightValue.percent(170).rawValue == "170%")
     #expect(Color(.white).value == "white")
     #expect(Color("#fff").render(prettyPrinted: false) == "color:#fff;")
     #expect(Color(.clear).render(prettyPrinted: false) == "color:transparent;")
@@ -130,6 +136,49 @@ private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
     #expect(Width(.percent(100)).render(prettyPrinted: false) == "width:100%;")
     #expect(Height(.auto).render(prettyPrinted: false) == "height:auto;")
 }
+
+@Test func lineHeightValuesRenderExactDeclarations() {
+    #expect(LineHeight(.normal).render() == "line-height: normal;")
+    #expect(LineHeight(.multiple(1.7)).render() == "line-height: 1.7;")
+    #expect(LineHeight(.multiple(1)).render() == "line-height: 1;")
+    #expect(LineHeight(.length(.px(28))).render() == "line-height: 28px;")
+    #expect(LineHeight(.length(.rem(1.5))).render() == "line-height: 1.5rem;")
+    #expect(LineHeight(.percent(170)).render() == "line-height: 170%;")
+    #expect(LineHeight(.multiple(1.7)).render(prettyPrinted: false) == "line-height:1.7;")
+}
+
+@Test func lineHeightLowersToConcreteASTAndTreeDump() {
+    switch LineHeight(.multiple(1.7)).cssDeclaration {
+    case let .property(declaration):
+        #expect(declaration.property == "line-height")
+        #expect(declaration.value == "1.7")
+    case .raw:
+        Issue.record("LineHeight must lower as a typed declaration")
+    }
+
+    let stylesheet = StyleSheet {
+        Rule(.class("copy")) {
+            LineHeight(.multiple(1.7))
+        }
+    }
+
+    #expect(
+        CSSTreeDumpRenderer().render(stylesheet) == """
+        Stylesheet
+        └─ Rule
+           ├─ selector: .copy
+           └─ line-height: 1.7
+        """
+    )
+}
+
+#if SWIFTCSS_ENABLE_STRING_LITERALS
+@Test func lineHeightSupportsOptInStringLiterals() {
+    #expect(LineHeight("var(--line-height)").render() == "line-height: var(--line-height);")
+    let value: LineHeightValue = "1.7"
+    #expect(LineHeight(value).render() == "line-height: 1.7;")
+}
+#endif
 
 @Test func firstClassPropertiesRenderPrettyCSS() {
     let stylesheet = StyleSheet {

@@ -11,7 +11,10 @@ public protocol CSSValue: Sendable {
 }
 
 func formatCSSNumber(_ value: Double) -> String {
-    if value.rounded(.towardZero) == value {
+    if value.isFinite,
+       value >= Double(Int.min),
+       value < Double(Int.max),
+       value.rounded(.towardZero) == value {
         return String(Int(value))
     }
     

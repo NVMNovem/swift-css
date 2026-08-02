@@ -18,6 +18,9 @@ The public authoring layer keeps readable Swift types such as `StyleSheet`,
 `Rule`, `Width`, `Color`, `Display`, `Padding`, selectors, media conditions,
 supports rules, layers, and keyframes. Typed value wrappers such as `Length`,
 `Percentage`, `Time`, and `Angle` retain explicit initializers and helpers.
+Property-specific wrappers such as `LineHeightValue` represent CSS grammars
+that do not fit a reusable type: unitless line-height multipliers, for example,
+are intentionally not modeled as `Length`.
 
 Property structs conform to `CSSProperty`, whose default lowering produces a
 concrete `CSSDeclaration`. `RawProperty` explicitly lowers to the raw
