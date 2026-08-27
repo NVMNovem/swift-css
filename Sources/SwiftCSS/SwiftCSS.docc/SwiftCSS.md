@@ -77,12 +77,18 @@ dedicated property wrapper.
 - ``CSSProperty``
 - ``RawProperty``
 - ``AlignItems``
+- ``AlignSelf``
+- ``AspectRatio``
 - ``BackdropFilter``
 - ``BackgroundColor``
 - ``Border``
+- ``BorderBottom``
 - ``BorderColor``
+- ``BorderLeft``
 - ``BorderRadius``
+- ``BorderRight``
 - ``BorderStyle``
+- ``BorderTop``
 - ``BorderWidth``
 - ``Bottom``
 - ``BoxShadow``
@@ -91,6 +97,9 @@ dedicated property wrapper.
 - ``ColumnGap``
 - ``Cursor``
 - ``Display``
+- ``FlexBasis``
+- ``FlexGrow``
+- ``FlexShrink``
 - ``FlexWrap``
 - ``FontFamily``
 - ``FontSize``
@@ -110,6 +119,7 @@ dedicated property wrapper.
 - ``MinHeight``
 - ``MinWidth``
 - ``ObjectFit``
+- ``ObjectPosition``
 - ``Opacity``
 - ``Outline``
 - ``Overflow``
@@ -141,6 +151,7 @@ dedicated property wrapper.
 - ``Time``
 - ``Angle``
 - ``AlignItemsValue``
+- ``AlignSelfValue``
 - ``BoxSizingValue``
 - ``CursorValue``
 - ``DisplayValue``
