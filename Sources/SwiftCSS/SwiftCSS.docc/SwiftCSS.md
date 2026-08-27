@@ -128,6 +128,7 @@ dedicated property wrapper.
 - ``Transition``
 - ``TransitionDuration``
 - ``Width``
+- ``WordBreak``
 - ``ZIndex``
 
 ### CSS Values
@@ -154,6 +155,7 @@ dedicated property wrapper.
 - ``TextAlignValue``
 - ``TextDecorationValue``
 - ``TextTransformValue``
+- ``WordBreakValue``
 - ``CSSColorSchemePreference``
 - ``CSSReducedMotionPreference``
 

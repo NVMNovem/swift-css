@@ -101,6 +101,8 @@ or the property's string initializer.
 - ``TextTransform``
 - ``TextAlign``
 - ``TextDecoration``
+- ``WordBreak``
+- ``WordBreakValue``
 
 ### Color, Borders, and Effects
 

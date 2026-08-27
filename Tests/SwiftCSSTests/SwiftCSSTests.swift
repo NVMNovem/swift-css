@@ -310,6 +310,10 @@ private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
     #expect(TextAlign(.right).render() == "text-align: right;")
     #expect(TextAlign(.justify).render() == "text-align: justify;")
     #expect(TextDecoration(.overline).render() == "text-decoration: overline;")
+    #expect(WordBreak(.normal).render() == "word-break: normal;")
+    #expect(WordBreak(.breakAll).render() == "word-break: break-all;")
+    #expect(WordBreak(.keepAll).render() == "word-break: keep-all;")
+    #expect(WordBreak(.breakWord).render() == "word-break: break-word;")
 }
 
 @Test func marginSidePropertiesRenderCSS() {
