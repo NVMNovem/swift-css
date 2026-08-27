@@ -206,6 +206,15 @@ private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
     )
 }
 
+@Test func flexItemPropertiesRenderCSS() {
+    #expect(AlignSelf(.auto).render() == "align-self: auto;")
+    #expect(AlignSelf(.center).render() == "align-self: center;")
+    #expect(FlexGrow(0).render() == "flex-grow: 0;")
+    #expect(FlexShrink(1).render() == "flex-shrink: 1;")
+    #expect(FlexBasis(.auto).render() == "flex-basis: auto;")
+    #expect(FlexBasis(.percent(50)).render() == "flex-basis: 50%;")
+}
+
 @Test func firstClassPropertiesRenderCompactCSS() {
     let stylesheet = StyleSheet {
         Rule(.class("card")) {
@@ -280,6 +289,11 @@ private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
     #expect(ObjectFit(.fill).render() == "object-fit: fill;")
     #expect(ObjectFit(.none).render() == "object-fit: none;")
     #expect(ObjectFit(.scaleDown).render() == "object-fit: scale-down;")
+    #expect(ObjectPosition("top right").render() == "object-position: top right;")
+    
+    #expect(AspectRatio(1.5).render() == "aspect-ratio: 1.5;")
+    #expect(AspectRatio(3, 2).render() == "aspect-ratio: 3 / 2;")
+    #expect(AspectRatio("auto").render() == "aspect-ratio: auto;")
     
     #expect(PointerEvents(.none).render() == "pointer-events: none;")
     #expect(PointerEvents(.auto).render() == "pointer-events: auto;")
@@ -316,12 +330,17 @@ private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
     #expect(WordBreak(.breakWord).render() == "word-break: break-word;")
 }
 
-@Test func marginSidePropertiesRenderCSS() {
+@Test func sidePropertiesRenderCSS() {
     #expect(MarginTop(.px(8)).render() == "margin-top: 8px;")
     #expect(MarginBottom(.px(5)).render() == "margin-bottom: 5px;")
     #expect(MarginLeft(.px(12)).render() == "margin-left: 12px;")
     #expect(MarginRight(.px(12)).render() == "margin-right: 12px;")
     #expect(MarginBottom("var(--space)").render() == "margin-bottom: var(--space);")
+    
+    #expect(BorderTop("1px solid red").render() == "border-top: 1px solid red;")
+    #expect(BorderBottom("1px solid var(--line)").render() == "border-bottom: 1px solid var(--line);")
+    #expect(BorderLeft("3px solid red").render() == "border-left: 3px solid red;")
+    #expect(BorderRight("1px dashed red").render() == "border-right: 1px dashed red;")
 }
 
 @Test func mediaRuleRendersPrettyCSS() {

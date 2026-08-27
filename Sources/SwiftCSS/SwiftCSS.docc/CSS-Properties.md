@@ -62,9 +62,11 @@ or the property's string initializer.
 - ``BoxSizing``
 - ``Overflow``
 - ``ObjectFit``
+- ``ObjectPosition``
 
 ### Sizing and Spacing
 
+- ``AspectRatio``
 - ``Width``
 - ``Height``
 - ``MinWidth``
@@ -88,7 +90,11 @@ or the property's string initializer.
 - ``GridTemplateRows``
 - ``FlexWrap``
 - ``AlignItems``
+- ``AlignSelf``
 - ``JustifyContent``
+- ``FlexGrow``
+- ``FlexShrink``
+- ``FlexBasis``
 
 ### Typography
 
@@ -109,6 +115,10 @@ or the property's string initializer.
 - ``Color``
 - ``BackgroundColor``
 - ``Border``
+- ``BorderTop``
+- ``BorderBottom``
+- ``BorderLeft``
+- ``BorderRight``
 - ``BorderColor``
 - ``BorderRadius``
 - ``BorderStyle``
