@@ -105,11 +105,13 @@ dedicated property wrapper.
 - ``FontSize``
 - ``FontWeight``
 - ``Gap``
+- ``GridArea``
 - ``GridTemplateColumns``
 - ``GridTemplateRows``
 - ``Height``
 - ``Inset``
 - ``JustifyContent``
+- ``JustifyItems``
 - ``Left``
 - ``LetterSpacing``
 - ``LineHeight``
@@ -159,6 +161,7 @@ dedicated property wrapper.
 - ``DisplayValue``
 - ``FlexWrapValue``
 - ``JustifyContentValue``
+- ``JustifyItemsValue``
 - ``ObjectFitValue``
 - ``OutlineValue``
 - ``OverflowValue``

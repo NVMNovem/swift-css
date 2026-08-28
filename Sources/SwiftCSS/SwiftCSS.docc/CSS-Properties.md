@@ -86,12 +86,14 @@ or the property's string initializer.
 
 ### Grid and Flexbox
 
+- ``GridArea``
 - ``GridTemplateColumns``
 - ``GridTemplateRows``
 - ``FlexWrap``
 - ``AlignItems``
 - ``AlignSelf``
 - ``JustifyContent``
+- ``JustifyItems``
 - ``FlexGrow``
 - ``FlexShrink``
 - ``FlexBasis``

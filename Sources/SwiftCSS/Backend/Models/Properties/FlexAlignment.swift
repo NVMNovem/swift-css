@@ -35,6 +35,16 @@ public struct AlignSelf: CSSProperty {
     }
 }
 
+public struct JustifyItems: CSSProperty {
+    
+    public let name = "justify-items"
+    public let value: String
+    
+    public init(_ value: JustifyItemsValue) {
+        self.value = value.rawValue
+    }
+}
+
 public struct JustifyContent: CSSProperty {
     
     public let name = "justify-content"
