@@ -132,11 +132,13 @@ dedicated property wrapper.
 - ``ScrollMarginTop``
 - ``TextAlign``
 - ``TextDecoration``
+- ``TextOverflow``
 - ``TextTransform``
 - ``Top``
 - ``Transform``
 - ``Transition``
 - ``TransitionDuration``
+- ``WhiteSpace``
 - ``Width``
 - ``WordBreak``
 - ``ZIndex``
@@ -165,7 +167,9 @@ dedicated property wrapper.
 - ``ResizeValue``
 - ``TextAlignValue``
 - ``TextDecorationValue``
+- ``TextOverflowValue``
 - ``TextTransformValue``
+- ``WhiteSpaceValue``
 - ``WordBreakValue``
 - ``CSSColorSchemePreference``
 - ``CSSReducedMotionPreference``

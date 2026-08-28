@@ -328,6 +328,14 @@ private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
     #expect(WordBreak(.breakAll).render() == "word-break: break-all;")
     #expect(WordBreak(.keepAll).render() == "word-break: keep-all;")
     #expect(WordBreak(.breakWord).render() == "word-break: break-word;")
+    #expect(WhiteSpace(.normal).render() == "white-space: normal;")
+    #expect(WhiteSpace(.nowrap).render() == "white-space: nowrap;")
+    #expect(WhiteSpace(.pre).render() == "white-space: pre;")
+    #expect(WhiteSpace(.preWrap).render() == "white-space: pre-wrap;")
+    #expect(WhiteSpace(.preLine).render() == "white-space: pre-line;")
+    #expect(WhiteSpace(.breakSpaces).render() == "white-space: break-spaces;")
+    #expect(TextOverflow(.clip).render() == "text-overflow: clip;")
+    #expect(TextOverflow(.ellipsis).render() == "text-overflow: ellipsis;")
 }
 
 @Test func sidePropertiesRenderCSS() {

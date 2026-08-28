@@ -107,6 +107,10 @@ or the property's string initializer.
 - ``TextTransform``
 - ``TextAlign``
 - ``TextDecoration``
+- ``TextOverflow``
+- ``TextOverflowValue``
+- ``WhiteSpace``
+- ``WhiteSpaceValue``
 - ``WordBreak``
 - ``WordBreakValue``
 
