@@ -323,6 +323,8 @@ private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
     
     #expect(Outline(.none).render() == "outline: none;")
     #expect(ScrollMarginTop(.px(84)).render() == "scroll-margin-top: 84px;")
+    #expect(ScrollbarWidth(.none).render() == "scrollbar-width: none;")
+    #expect(ScrollbarWidth(.thin).render() == "scrollbar-width: thin;")
 }
 
 @Test func typographyPropertiesRenderCSS() {

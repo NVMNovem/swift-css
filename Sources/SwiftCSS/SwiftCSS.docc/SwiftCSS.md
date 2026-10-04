@@ -133,6 +133,7 @@ dedicated property wrapper.
 - ``Right``
 - ``RowGap``
 - ``ScrollMarginTop``
+- ``ScrollbarWidth``
 - ``TextAlign``
 - ``TextDecoration``
 - ``TextOverflow``
@@ -172,6 +173,7 @@ dedicated property wrapper.
 - ``PointerEventsValue``
 - ``PositionValue``
 - ``ResizeValue``
+- ``ScrollbarWidthValue``
 - ``TextAlignValue``
 - ``TextDecorationValue``
 - ``TextOverflowValue``

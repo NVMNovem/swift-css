@@ -83,6 +83,8 @@ or the property's string initializer.
 - ``RowGap``
 - ``ColumnGap``
 - ``ScrollMarginTop``
+- ``ScrollbarWidth``
+- ``ScrollbarWidthValue``
 
 ### Grid and Flexbox
 
