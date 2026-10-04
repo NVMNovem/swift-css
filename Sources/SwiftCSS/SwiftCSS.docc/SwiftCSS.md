@@ -114,6 +114,7 @@ dedicated property wrapper.
 - ``JustifyItems``
 - ``Left``
 - ``LetterSpacing``
+- ``LineClamp``
 - ``LineHeight``
 - ``Margin``
 - ``MaxHeight``
@@ -141,6 +142,8 @@ dedicated property wrapper.
 - ``Transition``
 - ``TransitionDuration``
 - ``WhiteSpace``
+- ``WebkitBoxOrient``
+- ``WebkitLineClamp``
 - ``Width``
 - ``WordBreak``
 - ``ZIndex``
@@ -155,6 +158,7 @@ dedicated property wrapper.
 - ``Time``
 - ``Angle``
 - ``AlignItemsValue``
+- ``BoxOrientValue``
 - ``AlignSelfValue``
 - ``BoxSizingValue``
 - ``CursorValue``

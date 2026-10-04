@@ -106,6 +106,10 @@ or the property's string initializer.
 - ``LineHeight``
 - ``LineHeightValue``
 - ``LetterSpacing``
+- ``LineClamp``
+- ``WebkitLineClamp``
+- ``WebkitBoxOrient``
+- ``BoxOrientValue``
 - ``TextTransform``
 - ``TextAlign``
 - ``TextDecoration``

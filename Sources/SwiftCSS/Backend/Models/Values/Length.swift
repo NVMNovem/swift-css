@@ -48,6 +48,12 @@ public extension Length {
         .init("\(formatCSSNumber(value))rem")
     }
 
+    /// Multiples of the element's own computed line height — `2lh` is exactly
+    /// two lines of its text, whatever its font size and `line-height` are.
+    static func lh(_ value: Double) -> Self {
+        .init("\(formatCSSNumber(value))lh")
+    }
+
     static func vh(_ value: Double) -> Self {
         .init("\(formatCSSNumber(value))vh")
     }

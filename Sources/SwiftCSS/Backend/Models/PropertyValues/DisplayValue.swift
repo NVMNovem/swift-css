@@ -33,4 +33,8 @@ public extension DisplayValue {
     static let grid: Self = .init("grid")
     static let inlineGrid: Self = .init("inline-grid")
     static let none: Self = .init("none")
+
+    /// The old flexbox draft's box, which survives because `-webkit-line-clamp`
+    /// only takes effect on one. See ``WebkitLineClamp``.
+    static let webkitBox: Self = .init("-webkit-box")
 }

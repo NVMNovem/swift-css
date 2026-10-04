@@ -349,6 +349,18 @@ private func requirePropertyType<Property: CSSProperty>(_: Property.Type) {}
     #expect(TextOverflow(.ellipsis).render() == "text-overflow: ellipsis;")
 }
 
+@Test func lineClampPropertiesRenderCSS() {
+    #expect(LineClamp(2).render() == "line-clamp: 2;")
+    #expect(LineClamp("none").render() == "line-clamp: none;")
+    #expect(WebkitLineClamp(3).render() == "-webkit-line-clamp: 3;")
+    #expect(WebkitLineClamp("none").render() == "-webkit-line-clamp: none;")
+    #expect(WebkitBoxOrient(.vertical).render() == "-webkit-box-orient: vertical;")
+    #expect(WebkitBoxOrient(.horizontal).render() == "-webkit-box-orient: horizontal;")
+    #expect(Display(.webkitBox).render() == "display: -webkit-box;")
+    #expect(MinHeight(.lh(2)).render() == "min-height: 2lh;")
+    #expect(Length.lh(1.5).rawValue == "1.5lh")
+}
+
 @Test func sidePropertiesRenderCSS() {
     #expect(MarginTop(.px(8)).render() == "margin-top: 8px;")
     #expect(MarginBottom(.px(5)).render() == "margin-bottom: 5px;")
